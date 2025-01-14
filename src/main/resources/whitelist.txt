@@ -1,0 +1,5 @@
+/login.jsp
+/signup.jsp
+/login
+/signup
+/image.jsp

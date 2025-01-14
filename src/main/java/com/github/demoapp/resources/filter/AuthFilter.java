@@ -25,15 +25,15 @@ public class AuthFilter implements Filter {
     public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) req;
         Optional<HttpSession> session = Optional.ofNullable(httpServletRequest.getSession(false));
-        if (session.isPresent()){
+        if (session.isPresent()) {
             Optional<User> user = Optional.ofNullable((User) session.get().getAttribute("user"));
-            if (user.isPresent()){
-                chain.doFilter(req,resp);
-            }else{
-                req.getRequestDispatcher("/login.jsp").forward(req,resp);
+            if (user.isPresent()) {
+                chain.doFilter(req, resp);
+            } else {
+                req.getRequestDispatcher("/login.jsp").forward(req, resp);
             }
-        }else{
-            req.getRequestDispatcher("/login.jsp").forward(req,resp);
+        } else {
+            req.getRequestDispatcher("/login.jsp").forward(req, resp);
         }
     }
 }

@@ -15,6 +15,13 @@ import java.util.Set;
 
 
 public class WhiteListFilter implements Filter {
+    private static void setServletPathInSession(HttpServletRequest httpServletRequest) {
+        HttpSession session = httpServletRequest.getSession();
+        if (Optional.ofNullable(session.getAttribute("servletPath")).isEmpty()) {
+            session.setAttribute("servletPath", httpServletRequest.getServletPath());
+        }
+    }
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
@@ -40,19 +47,12 @@ public class WhiteListFilter implements Filter {
         String servletPath = httpServletRequest.getServletPath();
 
         if (whiteList.contains(servletPath)) {
-            req.getRequestDispatcher(servletPath).forward(req,resp);
+            req.getRequestDispatcher(servletPath).forward(req, resp);
         } else {
             setServletPathInSession(httpServletRequest);
             chain.doFilter(req, resp);
         }
 
-    }
-
-    private static void setServletPathInSession(HttpServletRequest httpServletRequest) {
-        HttpSession session = httpServletRequest.getSession();
-        if (Optional.ofNullable(session.getAttribute("servletPath")).isEmpty()) {
-            session.setAttribute("servletPath", httpServletRequest.getServletPath());
-        }
     }
 
     @Override

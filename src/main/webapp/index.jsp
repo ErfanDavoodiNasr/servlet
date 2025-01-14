@@ -112,6 +112,29 @@
             transition: background-image 0.3s ease;
         }
 
+        /* Logout Button Styles */
+        .logout-btn-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            background-image: linear-gradient(to right, #f44336, #e53935);
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+            transition: background-image 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-image: linear-gradient(to left, #f44336, #e53935);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
         .profile-btn:hover {
             background-image: linear-gradient(to left, #4caf50, #66bb6a);
         }
@@ -172,7 +195,8 @@
         <!-- Profile Picture Section -->
         <% User user = (User) session.getAttribute("user");%>
         <div class="profile-picture-section">
-            <img src="data:image/jpeg;base64,<%=user.getProfileImage()%>" alt="Profile Picture" class="profile-img" id="profileImage">
+            <img src="data:image/jpeg;base64,<%=user.getProfileImage()%>" alt="Profile Picture" class="profile-img"
+                 id="profileImage">
             <input type="file" id="profilePictureInput" name="profile" accept="image/*">
         </div>
 
@@ -215,8 +239,20 @@
             <button type="submit" class="submit-btn">Save Changes</button>
         </div>
     </form>
+    <div class="logout-btn-container">
+        <form action="logout" method="post">
+            <button type="submit" class="logout-btn">Log Out</button>
+        </form>
+    </div>
 </div>
 
+<script>
+    <%
+        if (request.getAttribute("message") != null) {
+    %>
+    alert('<%= request.getAttribute("message") %>');
+    <% } %>
+</script>
 
 </body>
 </html>

@@ -1,6 +1,9 @@
 package com.github.demoapp.service.impl;
 
 
+import com.github.demoapp.exception.EmailOrPasswordIsIncorrectException;
+import com.github.demoapp.exception.NotUniqueEmailException;
+import com.github.demoapp.exception.UserNotFoundException;
 import com.github.demoapp.model.User;
 import com.github.demoapp.model.dto.LoginUserRequest;
 import com.github.demoapp.model.dto.SaveUserRequest;
@@ -18,7 +21,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> save(SaveUserRequest userRequest) {
+    public Optional<User> save(SaveUserRequest userRequest) throws NotUniqueEmailException {
         User user = User.builder()
                 .id(userRequest.getId())
                 .firstname(userRequest.getFirstName())
@@ -31,7 +34,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> update(SaveUserRequest userRequest) {
+    public Optional<User> update(SaveUserRequest userRequest) throws NotUniqueEmailException {
         User user = User.builder()
                 .id(userRequest.getId())
                 .firstname(userRequest.getFirstName())
@@ -44,17 +47,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Optional<User> findByEmailAndPassword(LoginUserRequest userRequest) {
+    public Optional<User> findByEmailAndPassword(LoginUserRequest userRequest) throws EmailOrPasswordIsIncorrectException, UserNotFoundException {
         Optional<User> user = userRepository.findByEmail(userRequest.getEmail());
-        if (user.isPresent()){
+        if (user.isPresent()) {
             Boolean verifiedPassword = BCryptPassword.verifyBcryptPassword(userRequest.getPassword(), user.get().getPassword());
-            if (verifiedPassword){
+            if (verifiedPassword) {
                 return user;
-            }else{
-                Optional.empty();
+            } else {
+                throw new EmailOrPasswordIsIncorrectException("email or password is wrong");
             }
         }
-        return Optional.empty();
+        throw new UserNotFoundException("user not found");
     }
 
 }

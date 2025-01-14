@@ -3,7 +3,8 @@ package com.github.demoapp.secutiry;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 
-public class BCryptPassword {
+
+public final class BCryptPassword {
 
     public static String encodeBcrypt(String password) {
         BCrypt.Hasher hasher = BCrypt.withDefaults();

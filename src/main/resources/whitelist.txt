@@ -2,4 +2,3 @@
 /signup.jsp
 /login
 /signup
-/image.jsp

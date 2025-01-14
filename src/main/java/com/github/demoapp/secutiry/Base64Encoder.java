@@ -2,9 +2,16 @@ package com.github.demoapp.secutiry;
 
 import java.util.Base64;
 
-public class Base64Encoder {
+
+public final class Base64Encoder {
+    private static Base64.Encoder encoder;
+
+
     public static String encodeToString(byte[] inputBytes) {
-        return Base64.getEncoder().encodeToString(inputBytes);
+        if (encoder == null) {
+            encoder = Base64.getEncoder();
+        }
+        return encoder.encodeToString(inputBytes);
     }
 
 }

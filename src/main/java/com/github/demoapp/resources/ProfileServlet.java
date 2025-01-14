@@ -1,6 +1,7 @@
 package com.github.demoapp.resources;
 
 
+import com.github.demoapp.exception.NotUniqueEmailException;
 import com.github.demoapp.model.User;
 import com.github.demoapp.model.dto.SaveUserRequest;
 import com.github.demoapp.secutiry.Base64Encoder;
@@ -11,18 +12,30 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
-import java.security.InvalidParameterException;
 import java.util.Optional;
+
+import static com.github.demoapp.util.Help.requestDispatcher;
 
 @WebServlet("/profile")
 @MultipartConfig
 public class ProfileServlet extends HttpServlet {
+    private static SaveUserRequest generateSaveRequest(HttpServletRequest req, User user, String profileImage) {
+        return SaveUserRequest.builder()
+                .id(user.getId())
+                .firstName(req.getParameter("firstName"))
+                .lastName(req.getParameter("lastName"))
+                .email(req.getParameter("email"))
+                .password(user.getPassword())
+                .userProfileURL(profileImage)
+                .build();
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Part profile = req.getPart("profile");
             if (profile.getSize() > (1024 * 10)) {
-                throw new InvalidParameterException("Image must be at least 10KB");
+                requestDispatcher("/index.jsp", "message", "Image must be at least 10KB", req, resp);
             }
 
             HttpSession session = req.getSession();
@@ -36,19 +49,12 @@ public class ProfileServlet extends HttpServlet {
             session.setAttribute("user", userOptional.get());
 
         } catch (Exception e) {
-            req.setAttribute("message", e.getMessage());
+            if (e instanceof NotUniqueEmailException) {
+                requestDispatcher("/index.jsp", "message", "this email is already taken", req, resp);
+            } else {
+                requestDispatcher("/index.jsp", "message", "there is some problem please try again later", req, resp);
+            }
         }
         req.getRequestDispatcher("/index.jsp").forward(req, resp);
-    }
-
-    private static SaveUserRequest generateSaveRequest(HttpServletRequest req, User user, String profileImage) {
-        return SaveUserRequest.builder()
-                .id(user.getId())
-                .firstName(req.getParameter("firstName"))
-                .lastName(req.getParameter("lastName"))
-                .email(req.getParameter("email"))
-                .password(user.getPassword())
-                .userProfileURL(profileImage)
-                .build();
     }
 }

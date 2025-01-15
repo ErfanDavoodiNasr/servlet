@@ -13,7 +13,7 @@ import lombok.Data;
 public class LoginUserRequest {
 
     @NotBlank(message = "Phone number cannot be empty")
-    @Pattern(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+    @Pattern(regexp = "^[A-Za-z0-9._-]+@gmail\\.com$")
     private String email;
 
     @Size(min = 8, max = 20, message = "password must contain exactly 8-20 digits")

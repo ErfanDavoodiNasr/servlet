@@ -5,17 +5,38 @@ import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.github.demoapp.secutiry.PasswordHasher;
 
 
-public final class BCryptPassword implements PasswordHasher {
+public class BCryptPassword implements PasswordHasher {
+    private volatile BCrypt.Hasher hasher;
+    private volatile BCrypt.Verifyer verifier;
+    private final Object object = new Object();
 
     @Override
     public String encode(String password) {
-        BCrypt.Hasher hasher = BCrypt.withDefaults();
-        return hasher.hashToString(12, password.toCharArray());
+        return getHasher().hashToString(12, password.toCharArray());
     }
 
     @Override
     public Boolean verifyPassword(String password, String hashedPassword) {
-        BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), hashedPassword.toCharArray());
-        return result.verified;
+        return getVerifier().verify(password.toCharArray(), hashedPassword.toCharArray()).verified;
     }
+
+
+    private BCrypt.Hasher getHasher() {
+        if (hasher == null) synchronized (object) {
+            if (hasher == null) {
+                hasher = BCrypt.withDefaults();
+            }
+        }
+        return hasher;
+    }
+
+    private BCrypt.Verifyer getVerifier() {
+        if (verifier == null) synchronized (object) {
+            if (verifier == null) {
+                verifier = BCrypt.verifyer();
+            }
+        }
+        return verifier;
+    }
+
 }

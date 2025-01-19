@@ -15,8 +15,8 @@ import com.github.demoapp.service.UserService;
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
-    private UserRepository userRepository;
-    private PasswordHasher passwordHasher = new BCryptPassword();
+    private final UserRepository userRepository;
+    private final PasswordHasher passwordHasher = new BCryptPassword();
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;

@@ -8,13 +8,15 @@ import com.github.demoapp.model.User;
 import com.github.demoapp.model.dto.LoginUserRequest;
 import com.github.demoapp.model.dto.SaveUserRequest;
 import com.github.demoapp.repository.UserRepository;
-import com.github.demoapp.secutiry.BCryptPassword;
+import com.github.demoapp.secutiry.impl.BCryptPassword;
+import com.github.demoapp.secutiry.PasswordHasher;
 import com.github.demoapp.service.UserService;
 
 import java.util.Optional;
 
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
+    private PasswordHasher passwordHasher = new BCryptPassword();
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -27,7 +29,7 @@ public class UserServiceImpl implements UserService {
                 .firstname(userRequest.getFirstName())
                 .lastName(userRequest.getLastName())
                 .email(userRequest.getEmail())
-                .password(BCryptPassword.encodeBcrypt(userRequest.getPassword()))
+                .password(passwordHasher.encode(userRequest.getPassword()))
                 .profileImage(userRequest.getUserProfileURL())
                 .build();
         return userRepository.save(user);
@@ -50,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public Optional<User> findByEmailAndPassword(LoginUserRequest userRequest) throws EmailOrPasswordIsIncorrectException, UserNotFoundException {
         Optional<User> user = userRepository.findByEmail(userRequest.getEmail());
         if (user.isPresent()) {
-            Boolean verifiedPassword = BCryptPassword.verifyBcryptPassword(userRequest.getPassword(), user.get().getPassword());
+            Boolean verifiedPassword = passwordHasher.verifyPassword(userRequest.getPassword(), user.get().getPassword());
             if (verifiedPassword) {
                 return user;
             } else {

@@ -216,7 +216,7 @@
             <!-- Email -->
             <div class="form-group">
                 <label for="Email">Email</label>
-                <input type="email" id="Email" name="email" value="<%= user.getEmail()%>">
+                <input type="email" id="Email" name="email" value="<%=user.getEmail()%>">
             </div>
             <!-- Password Fields -->
             <div class="form-group">

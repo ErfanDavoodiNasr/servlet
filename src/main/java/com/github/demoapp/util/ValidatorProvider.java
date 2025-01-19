@@ -9,10 +9,10 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ValidatorProvider {
-    private static volatile ValidatorFactory validatorFactory;
-    final Object object = new Object();
+    private volatile ValidatorFactory validatorFactory;
+    private final Object object = new Object();
 
-    public static Validator getValidator() {
+    public Validator getValidator() {
         if (validatorFactory == null) synchronized (object) {
             if (validatorFactory == null) {
                 validatorFactory = Validation.buildDefaultValidatorFactory();

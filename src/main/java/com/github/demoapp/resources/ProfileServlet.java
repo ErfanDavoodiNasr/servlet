@@ -24,9 +24,6 @@ public class ProfileServlet extends HttpServlet {
                 resp.getWriter().println(profileImage);
             } else {
                 byte[] imageBytes = decodeToString(profileImage);
-                resp.setContentType("image/*");
-                resp.setContentLength(imageBytes.length);
-
                 resp.getOutputStream().write(imageBytes);
             }
         }

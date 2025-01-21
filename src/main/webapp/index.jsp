@@ -196,7 +196,7 @@
         <% User user = (User) session.getAttribute("user");%>
         <div class="profile-picture-section">
             <%
-                String profile = user != null ? user.getProfileImage() : null;
+                String profile = user.getProfileImage();
                 if (profile != null) {
             %>
             <img alt="Profile Picture" class="profile-img" id="profileImage" src="profile">

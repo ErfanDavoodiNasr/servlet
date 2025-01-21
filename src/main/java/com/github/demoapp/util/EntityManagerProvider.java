@@ -8,10 +8,10 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class EntityManagerProvider {
-    private EntityManagerFactory emf;
-    private final Object object = new Object();
+    private static final Object object = new Object();
+    private static EntityManagerFactory emf;
 
-    public synchronized EntityManager getEntityManager() {
+    public static synchronized EntityManager getEntityManager() {
         if (emf == null) synchronized (object) {
             if (emf == null) {
                 emf = Persistence.createEntityManagerFactory("jdbc-postgres");

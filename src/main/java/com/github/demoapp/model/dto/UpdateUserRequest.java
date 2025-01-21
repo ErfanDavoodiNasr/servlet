@@ -1,17 +1,14 @@
 package com.github.demoapp.model.dto;
 
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
 
-
 @Data
 @Builder
-public class SaveUserRequest {
-
+public class UpdateUserRequest {
     private Integer id;
 
     @Size(min = 3, max = 20, message = "First name must be between 3 and 20 characters")

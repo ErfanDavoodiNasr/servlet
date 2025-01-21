@@ -6,9 +6,9 @@ import com.github.demoapp.secutiry.PasswordHasher;
 
 
 public class BCryptPassword implements PasswordHasher {
+    private final Object object = new Object();
     private volatile BCrypt.Hasher hasher;
     private volatile BCrypt.Verifyer verifier;
-    private final Object object = new Object();
 
     @Override
     public String encode(String password) {

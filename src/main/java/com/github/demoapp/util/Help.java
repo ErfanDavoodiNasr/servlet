@@ -13,11 +13,11 @@ import java.util.Random;
 
 @UtilityClass
 public class Help {
-    private final Object object = new Object();
-    private volatile Random random;
-    private volatile Gson gson;
+    private static final Object object = new Object();
+    private static volatile Random random;
+    private static volatile Gson gson;
 
-    public String generateRandomCode() {
+    public static String generateRandomCode() {
         if (random == null) synchronized (object) {
             if (random == null) {
                 random = new Random();
@@ -26,7 +26,7 @@ public class Help {
         return String.format("%06d", random.nextInt(1_000_000));
     }
 
-    public synchronized Gson getGson() {
+    public static synchronized Gson getGson() {
         if (gson == null) synchronized (object) {
             if (gson == null) {
                 gson = new Gson();
@@ -35,12 +35,12 @@ public class Help {
         return gson;
     }
 
-    public void requestDispatcher(String path, String attributeName, String attributeValue, ServletRequest req, ServletResponse resp) throws ServletException, IOException {
+    public static void requestDispatcher(String path, String attributeName, String attributeValue, ServletRequest req, ServletResponse resp) throws ServletException, IOException {
         req.setAttribute(attributeName, attributeValue);
         req.getRequestDispatcher(path).forward(req, resp);
     }
 
-    public void requestDispatcher(String path, String attributeName, List<String> attributeValue, ServletRequest req, ServletResponse resp) throws ServletException, IOException {
+    public static void requestDispatcher(String path, String attributeName, List<String> attributeValue, ServletRequest req, ServletResponse resp) throws ServletException, IOException {
         req.setAttribute(attributeName, attributeValue);
         req.getRequestDispatcher(path).forward(req, resp);
     }

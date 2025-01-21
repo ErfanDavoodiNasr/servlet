@@ -81,5 +81,4 @@ public class UserRepositoryImpl implements UserRepository {
             em.close();
         }
     }
-
 }

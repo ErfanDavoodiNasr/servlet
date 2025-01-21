@@ -14,9 +14,8 @@ public final class Base64Encoder {
         return encoder.encodeToString(inputBytes);
     }
 
-    public static String decodeToString(String encodedInput) {
-        byte[] decodedBytes = Base64.getUrlDecoder().decode(encodedInput);
-        return new String(decodedBytes);
+    public static byte[] decodeToString(String encodedInput) {
+        return Base64.getDecoder().decode(encodedInput);
     }
 
 }

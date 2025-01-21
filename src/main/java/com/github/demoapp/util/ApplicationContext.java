@@ -10,9 +10,9 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ApplicationContext {
-    private UserRepository userRepository;
+    private static UserRepository userRepository;
     @Getter
-    private UserService userService;
+    private static UserService userService;
 
     static {
         userRepository = new UserRepositoryImpl();

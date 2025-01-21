@@ -191,12 +191,18 @@
 
 <div class="container">
     <h2>Edit User Information</h2>
-    <form action="profile" method="post" enctype="multipart/form-data">
+    <form action="dashboard" method="post" enctype="multipart/form-data">
         <!-- Profile Picture Section -->
         <% User user = (User) session.getAttribute("user");%>
         <div class="profile-picture-section">
-            <img src="data:image/jpeg;base64,<%=user.getProfileImage()%>" alt="Profile Picture" class="profile-img"
-                 id="profileImage">
+            <%
+                String profile = user != null ? user.getProfileImage() : null;
+                if (profile != null) {
+            %>
+            <img alt="Profile Picture" class="profile-img" id="profileImage" src="profile">
+            <% } else { %>
+            <img alt="Default Profile Picture" class="profile-img" id="profileImage" src="images.jpeg">
+            <% } %>
             <input type="file" id="profilePictureInput" name="profile" accept="image/*">
         </div>
 

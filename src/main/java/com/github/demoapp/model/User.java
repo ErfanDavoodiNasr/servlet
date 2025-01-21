@@ -27,7 +27,7 @@ public class User {
     @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "profile_image", length = 20_000)
+    @Column(name = "profile_image", columnDefinition = "TEXT")
     private String profileImage;
 
     @Column(unique = true)
